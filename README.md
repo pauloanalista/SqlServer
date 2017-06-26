@@ -1,8 +1,7 @@
 # SqlServer
 Querys e rotinas que facilitam nosso dia a dia.
 
-
-#Paginando o resultado de uma query
+# Paginando o resultado de uma query
 
 ```sh
 DECLARE @PageSize As Int = 10
@@ -16,8 +15,9 @@ ORDER BY Data
     FETCH NEXT @PageSize ROWS ONLY;
 ```
 
-#IIF - Alternativa ao CASE WHEN
+# IIF - Alternativa ao CASE WHEN
 Operador ternário. Simplifica o uso excessivo de CASE WHEN, que às vezes acaba tornando a consulta ilegível.
+
 ```sh
 SELECT
       Data
@@ -27,7 +27,9 @@ FROM Pedido
 
 ```
 
-#LAG/LEAD: Funções que permite acessar alguma coluna da linha anterior ou posterior, respectivamente.
+#LAG/LEAD 
+Funções que permite acessar alguma coluna da linha anterior ou posterior, respectivamente.
+
 ```sh
 -- Retorna NULL
 SELECT
@@ -46,7 +48,9 @@ FROM Pedido
 ORDER BY Data ASC
 ```
 
-#EXCLUSÃO DE OBJETOS: Sintaxe mais simples para remoção de objetos.
+# EXCLUSÃO DE OBJETOS 
+Sintaxe mais simples para remoção de objetos.
+
 ```sh
 -- Antes
 IF OBJECT_ID('Pedido', 'U') IS NOT NULL
@@ -55,12 +59,16 @@ IF OBJECT_ID('Pedido', 'U') IS NOT NULL
 -- Agora
 DROP TABLE IF EXISTS Pedido
 ```
-#STRING_SPLIT: Função que recebe uma string (podendo ser uma coluna de uma tabela) separada por um determinado caractere e permite utilizar o resultado na cláusula FROM ou JOIN.
+
+# STRING_SPLIT 
+Função que recebe uma string (podendo ser uma coluna de uma tabela) separada por um determinado caractere e permite utilizar o resultado na cláusula FROM ou JOIN.
+
 ```sh
 SELECT value FROM string_split('PAULO;AGATHA;FERNANDA', ';')
 ```
 
-#Script responsável por buscar um campo específico em todas as tabelas do banco de dados
+# Script responsável por buscar um campo específico em todas as tabelas do banco de dados
+
 ```sh
 --use NomeDoBancoDeDados
 
