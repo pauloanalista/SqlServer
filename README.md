@@ -27,7 +27,7 @@ FROM Pedido
 
 ```
 
-#LAG/LEAD 
+# LAG/LEAD 
 Funções que permite acessar alguma coluna da linha anterior ou posterior, respectivamente.
 
 ```sh
