@@ -89,3 +89,22 @@ WHERE
 ORDER BY 
 	T.name ASC
 ```
+##### Script responsável por localizar palavras em tabelas, tabela de sistema, procedures, views e funções
+
+```sh
+/*
+U => Tabela Usuário
+S => Tabela de sistema
+P => Procedure
+V => View
+F => Function
+*/
+
+SELECT A.NAME, A.TYPE, B.TEXT
+  FROM SYSOBJECTS  A (nolock)
+  JOIN SYSCOMMENTS B (nolock) 
+    ON A.ID = B.ID
+WHERE B.TEXT LIKE '%tempo%'  --- Informação a ser procurada no corpo da procedure, funcao ou view
+  AND A.TYPE = 'P'                     --- Tipo de objeto a ser localizado no caso procedure
+ ORDER BY A.NAME
+```
