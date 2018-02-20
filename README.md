@@ -108,3 +108,18 @@ WHERE B.TEXT LIKE '%tempo%'  --- Informação a ser procurada no corpo da proced
   AND A.TYPE = 'P'                     --- Tipo de objeto a ser localizado no caso procedure
  ORDER BY A.NAME
 ```
+
+##### Script responsável por obter usuários ativos no banco
+```sh
+SELECT 
+    DB_NAME(dbid) as DBName, 
+    COUNT(dbid) as NumberOfConnections,
+    loginame as LoginName
+FROM
+    sys.sysprocesses
+WHERE 
+    dbid > 0
+GROUP BY 
+    dbid, loginame
+order by 2 desc 
+```
