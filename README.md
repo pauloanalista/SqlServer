@@ -142,3 +142,66 @@ ORDER BY Avg_CPU_Time DESC
 --ORDER BY AVG_Run_Time DESC
 --ORDER BY execution_count DESC
 ```
+
+##### Como verificar e resolver a fragmentação de índices no SQL Server
+```sh
+	SELECT 
+			dbschemas.[name] as 'Schema',
+			dbtables.[name] as 'Table',
+			dbindexes.[name] as 'Index',
+			indexstats.avg_fragmentation_in_percent,
+			indexstats.page_count
+	 FROM 
+			sys.dm_db_index_physical_stats (DB_ID(), NULL, NULL, NULL, NULL) AS indexstats
+INNER JOIN sys.tables dbtables 
+		on dbtables.[object_id] = indexstats.[object_id]
+INNER JOIN sys.schemas dbschemas 
+	    on dbtables.[schema_id] = dbschemas.[schema_id]
+INNER JOIN sys.indexes AS dbindexes 
+		ON dbindexes.[object_id] = indexstats.[object_id]
+	   AND indexstats.index_id = dbindexes.index_id
+WHERE indexstats.database_id = DB_ID() AND dbtables.[name] like '%Ultima%' 
+ORDER BY indexstats.avg_fragmentation_in_percent desc
+
+```
+A seguinte tabela indica as recomendações da Microsoft sobre rebuild e reorganize:
+
+Alimentos | Preço
+--------- | ------
+Arroz     | R$ 10
+Feijão    | R$ 8
+Batata    | R$ 7
+Macarrão  | R$ 8
+
+
+ Fragmentação (em %)                     | Ação             | Query 
+-----------------------------------------|:----------------:|------------------------------------------ 
+avg_fragmentation_in_percent > 5 AND < 30| Reorganize Index | ALTER INDEX REORGANIZE 
+avg_fragmentation_in_percent > 30	 | Rebuild Index    | ALTER INDEX REBUILD WITH (ONLINE = ON)
+
+A recompilação de um índice pode ser executada online ou offline. A reorganização de um índice sempre é executada online. Para atingir disponibilidade semelhante à opção de reorganização, recrie índices online. Veja o exemplo:
+
+```sh
+--reorganizar um índice específico
+ALTER INDEX IX_NAME
+  ON dbo.Employee  
+REORGANIZE ;   
+GO  
+
+-- reorganizar todos os índices de uma tabela
+ALTER INDEX ALL ON dbo.Employee  
+REORGANIZE ;   
+GO  
+
+-- rebuild de um índice específico
+ALTER INDEX PK_Employee_BusinessEntityID ON dbo.Employee
+REBUILD;
+
+-- rebuild de todos índice de uma tabela
+ALTER INDEX ALL ON dbo.Employee
+REBUILD;
+	
+
+```
+
+Lembre-se que o comando rebuild por padrão gera lock na tabela e leva bem mais tempo do que o reorganize. Por isto tenha cuidado ao realizar estas operações dentro do horário produtivo do seu software.
