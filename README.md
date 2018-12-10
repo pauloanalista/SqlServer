@@ -166,14 +166,6 @@ ORDER BY indexstats.avg_fragmentation_in_percent desc
 ```
 A seguinte tabela indica as recomendações da Microsoft sobre rebuild e reorganize:
 
-Alimentos | Preço
---------- | ------
-Arroz     | R$ 10
-Feijão    | R$ 8
-Batata    | R$ 7
-Macarrão  | R$ 8
-
-
  Fragmentação (em %)                     | Ação             | Query 
 -----------------------------------------|:----------------:|------------------------------------------ 
 avg_fragmentation_in_percent > 5 AND < 30| Reorganize Index | ALTER INDEX REORGANIZE 
