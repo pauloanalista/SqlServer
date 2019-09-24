@@ -197,3 +197,27 @@ REBUILD;
 ```
 
 Lembre-se que o comando rebuild por padrão gera lock na tabela e leva bem mais tempo do que o reorganize. Por isto tenha cuidado ao realizar estas operações dentro do horário produtivo do seu software.
+
+
+##### Como matar os processos do banco de dados
+```sh
+	DECLARE @query VARCHAR(MAX) = ''
+ 
+	SELECT
+    		@query = COALESCE(@query, ',') + 'KILL ' + CONVERT(VARCHAR, spid) + '; '
+	FROM
+    		master..sysprocesses
+	WHERE
+    		dbid = DB_ID('NomeDaMinhaBase') -- Nome do database
+    	  AND dbid > 4 -- Não eliminar sessões em databases de sistema
+    	  AND spid <> @@SPID -- Não eliminar a sua própria sessão
+ 
+ 
+	IF (LEN(@query) > 0)
+    		EXEC(@query)
+    	--PRINT @QUERY
+
+```
+É possível matar o processo pelo Activity Monitor
+ 
+- [Youtube](https://www.youtube.com/watch?v=rKvkcwFo89o)
