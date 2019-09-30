@@ -201,21 +201,36 @@ Lembre-se que o comando rebuild por padrão gera lock na tabela e leva bem mais 
 
 ##### Como matar os processos do banco de dados
 ```sh
-	DECLARE @query VARCHAR(MAX) = ''
+--CONSULTAR PROCESSOS
+select DB_NAME(spid), *
+FROM
+    master..sysprocesses
+WHERE
+    --dbid = DB_ID('ViacaoMaua') -- Nome do database
+     dbid > 4 -- Não eliminar sessões em databases de sistema
+    AND spid <> @@SPID -- Não eliminar a sua própria sessão
+    and status not in('sleeping', 'suspended')
+--    order by last_batch asc
+order by cpu desc
+    
+
+--MATAR PROCESSOS
+DECLARE @query VARCHAR(MAX) = ''
  
-	SELECT
-    		@query = COALESCE(@query, ',') + 'KILL ' + CONVERT(VARCHAR, spid) + '; '
-	FROM
-    		master..sysprocesses
-	WHERE
-    		dbid = DB_ID('NomeDaMinhaBase') -- Nome do database
-    	  AND dbid > 4 -- Não eliminar sessões em databases de sistema
-    	  AND spid <> @@SPID -- Não eliminar a sua própria sessão
+SELECT
+    @query = COALESCE(@query, ',') + 'KILL ' + CONVERT(VARCHAR, spid) + '; '
+FROM
+    master..sysprocesses
+WHERE
+    1=1
+    and dbid = DB_ID('ViacaoSantaLuzia') -- Nome do database
+    AND dbid > 4 -- Não eliminar sessões em databases de sistema
+    AND spid <> @@SPID -- Não eliminar a sua própria sessão
+	--and status <> 'sleeping'
  
- 
-	IF (LEN(@query) > 0)
-    		EXEC(@query)
-    	--PRINT @QUERY
+IF (LEN(@query) > 0)
+    --EXEC(@query)
+    PRINT @QUERY
 
 ```
 É possível matar o processo pelo Activity Monitor
