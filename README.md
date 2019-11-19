@@ -3,7 +3,7 @@ Querys e rotinas que facilitam nosso dia a dia.
 
 ##### Paginando o resultado de uma query
 
-```sh
+```sql
 DECLARE @PageSize As Int = 10
 DECLARE @PageNumber As Int = 1
  SELECT
@@ -18,7 +18,7 @@ ORDER BY Data
 ##### IIF - Alternativa ao CASE WHEN
 Operador ternário. Simplifica o uso excessivo de CASE WHEN, que às vezes acaba tornando a consulta ilegível.
 
-```sh
+```sql
 SELECT
       Data
     , Valor
@@ -30,7 +30,7 @@ FROM Pedido
 ##### LAG/LEAD 
 Funções que permite acessar alguma coluna da linha anterior ou posterior, respectivamente.
 
-```sh
+```sql
 -- Retorna NULL
 SELECT
       Data
@@ -51,7 +51,7 @@ ORDER BY Data ASC
 ##### EXCLUSÃO DE OBJETOS 
 Sintaxe mais simples para remoção de objetos.
 
-```sh
+```sql
 -- Antes
 IF OBJECT_ID('Pedido', 'U') IS NOT NULL
     DROP TABLE Pedido
@@ -63,13 +63,13 @@ DROP TABLE IF EXISTS Pedido
 ##### STRING_SPLIT 
 Função que recebe uma string (podendo ser uma coluna de uma tabela) separada por um determinado caractere e permite utilizar o resultado na cláusula FROM ou JOIN.
 
-```sh
+```sql
 SELECT value FROM string_split('PAULO;AGATHA;FERNANDA', ';')
 ```
 
 ##### Script responsável por buscar um campo específico em todas as tabelas do banco de dados
 
-```sh
+```sql
 --use NomeDoBancoDeDados
 
 --Buscar campo em todas as tabelas
@@ -110,7 +110,7 @@ WHERE B.TEXT LIKE '%tempo%'  --- Informação a ser procurada no corpo da proced
 ```
 
 ##### Script responsável por obter usuários ativos no banco
-```sh
+```sql
 SELECT 
     DB_NAME(dbid) as DBName, 
     COUNT(dbid) as NumberOfConnections,
@@ -124,7 +124,7 @@ GROUP BY
 order by 2 desc 
 ```
 ##### Script responsável por obter consultas pesadas
-```sh
+```sql
 SELECT TOP 10
 total_worker_time/execution_count AS Avg_CPU_Time
     ,execution_count
