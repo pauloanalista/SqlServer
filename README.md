@@ -173,7 +173,7 @@ avg_fragmentation_in_percent > 30	 | Rebuild Index    | ALTER INDEX REBUILD WITH
 
 A recompilação de um índice pode ser executada online ou offline. A reorganização de um índice sempre é executada online. Para atingir disponibilidade semelhante à opção de reorganização, recrie índices online. Veja o exemplo:
 
-```sh
+```sql
 --reorganizar um índice específico
 ALTER INDEX IX_NAME
   ON dbo.Employee  
@@ -200,7 +200,7 @@ Lembre-se que o comando rebuild por padrão gera lock na tabela e leva bem mais 
 
 
 ##### Como matar os processos do banco de dados
-```sh
+```sql
 --CONSULTAR PROCESSOS
 select DB_NAME(spid), *
 FROM
@@ -239,7 +239,7 @@ IF (LEN(@query) > 0)
 
 
 ##### Consultar tabelas locadas
-```sh
+```sql
 SELECT distinct L.request_session_id AS SPID,
 		DT.database_transaction_begin_time,
 		datediff(MINUTE, DT.database_transaction_begin_time, getdate()) as tempo_transacao_aberta_minutos,
@@ -273,3 +273,12 @@ ORDER BY DT.database_transaction_begin_time desc
 
 ```
 
+#####  Como verificar os spids responsáveis pelos bloqueios
+```sql
+select spid, blocked, hostname=left(hostname,20), program_name=left(program_name,20),
+       WaitTime_Seg = convert(int,(waittime/1000))  ,open_tran, status
+From master.dbo.sysprocesses 
+where blocked > 0
+and spid in (select blocked from Master.dbo.sysprocesses where blocked > 0)
+order by spid
+```
