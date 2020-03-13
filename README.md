@@ -282,3 +282,11 @@ where blocked > 0
 and spid in (select blocked from Master.dbo.sysprocesses where blocked > 0)
 order by spid
 ```
+
+# VEJA TAMBÉM
+## Cursos baratos!
+- [Meus cursos](https://olha.la/udemy)
+
+## Novidades, cupons de descontos e cursos gratuitos
+https://olha.la/ilovecode-receber-cupons-novidades
+
