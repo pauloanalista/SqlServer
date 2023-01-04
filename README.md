@@ -68,9 +68,15 @@ print @Result
 ```
 
 
+##### Percentual CPU Banco
 
+```sql
 
-
+select 
+	end_time, avg_cpu_percent as PercentualCpuBanco,
+	* 
+from sys.dm_db_resource_stats
+```
 
 ##### Paginando o resultado de uma query
 
