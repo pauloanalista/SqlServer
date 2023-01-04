@@ -1,7 +1,19 @@
 # SqlServer
 Querys e rotinas que facilitam nosso dia a dia.
 
-
+#### Qtde de conexões abertas
+```sql
+SELECT
+    DB_NAME(dbid) as BancoDeDados, 
+    COUNT(dbid) as QtdeConexoes,
+    loginame as Login
+FROM
+    sys.sysprocesses
+WHERE
+    dbid > 0
+GROUP BY
+    dbid, loginame
+```
 
 ##### Criar classe C# via Sql
 
