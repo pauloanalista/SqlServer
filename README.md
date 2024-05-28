@@ -1,6 +1,15 @@
 # SqlServer
 Querys e rotinas que facilitam nosso dia a dia.
+#### Habilita e desabilita o identity
+```sql
+SET IDENTITY_INSERT Automacao.VersaoGlobal ON  --Desabilita o IDENTITY
 
+SET IDENTITY_INSERT Automacao.VersaoGlobal OFF  --Habilita o IDENTITY
+```
+#### Seta proxima versão do identity
+```sql
+DBCC CHECKIDENT('Automacao.VersaoGlobal', RESEED, 427) -- proximo sera 428
+```
 #### Qtde de conexões abertas
 ```sql
 SELECT
